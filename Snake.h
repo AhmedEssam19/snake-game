@@ -9,7 +9,7 @@ class Snake
 private:
 	const sf::Texture snake_image;
 	unsigned int length;
-	std::vector<sf::Sprite> p_snake{2 + length};
+	std::vector<sf::Sprite> p_snake{length};
 	sf::Sprite apple;
 
 	// width and height of snake parts in pixels

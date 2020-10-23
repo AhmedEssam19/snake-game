@@ -20,25 +20,24 @@ const sf::IntRect Snake::THIRD_QUARTER {0 * width, 1 * height, width, height};
 const sf::IntRect Snake::FORTH_QUARTER {2 * width, 2 * height, width, height};
 
 Snake::Snake(const sf::Texture& snake_image, unsigned int length):
-    snake_image {snake_image}, length{length}
+    snake_image {snake_image}, length{length + 2}
 {
-    // setting snake head
+    // sett snake head
     p_snake[0].setTexture(snake_image);
     p_snake[0].setTextureRect(RIGHT_HEAD);
 
-    // setting snake body
-    size_t len = p_snake.size();
-    for (int i = 1; i < len - 1; i++)
+    // set snake body
+    for (int i = 1; i < this->length - 1; i++)
     {
         p_snake[i].setTexture(snake_image);
         p_snake[i].setTextureRect(HORIZONTAL_MID);
     }
 
-    // setting snake tail
-    p_snake[len - 1].setTexture(snake_image);
-    p_snake[len - 1].setTextureRect(LEFT_TAIL);
+    // set snake tail
+    p_snake[this->length - 1].setTexture(snake_image);
+    p_snake[this->length - 1].setTextureRect(LEFT_TAIL);
 
-    // setting the apple
+    // set the apple
     apple.setTexture(snake_image);
     apple.setTextureRect(sf::IntRect(0 * width, 3 * height, width, height));
 }
@@ -46,20 +45,18 @@ Snake::Snake(const sf::Texture& snake_image, unsigned int length):
 
 void Snake::start()
 {
-    // setting the orientation of the snake in the beginning
-    size_t len = p_snake.size();
-    for (int i = 0; i < len - 1; i++)
-        p_snake[i].setPosition(sf::Vector2f(width * (len - i - 1), 0));
+    // set the orientation of the snake in the beginning
+    for (int i = 0; i < length; i++)
+        p_snake[i].setPosition(sf::Vector2f(width * (length - i - 1), 0));
     
-    // setting The position of the apple randomly
+    // set The position of the apple randomly
     apple.setPosition(sf::Vector2f((rand() % 30) * 64, (rand() % 15) * 64));
 }
 
 void Snake::draw(sf::RenderWindow& window)
 {
     // draw the snake and the apple
-    size_t len = p_snake.size();
-    for (int i = 0; i < len; i++)
+    for (int i = 0; i < length; i++)
         window.draw(p_snake[i]);
 
     window.draw(apple);
@@ -67,15 +64,15 @@ void Snake::draw(sf::RenderWindow& window)
 
 void Snake::move(float x, float y)
 {
-    // moving snake parts. we move head first then we move next part to head last position and so on
+    // move snake parts. we move head first then we move next part to head last position and so on
     if (x != 0 || y != 0)
     {
-        size_t len = p_snake.size();
-        for (size_t i = len - 1; i > 0; i--)
+        for (size_t i = length - 1; i > 0; i--)
         {
             p_snake[i].setPosition(p_snake[i - 1].getPosition());
         }
-        p_snake[0].setPosition(sf::Vector2f((int)(p_snake[0].getPosition().x + x + 1920) % 1920, (int)(p_snake[0].getPosition().y + y + 1088) % 1088));
+        p_snake[0].setPosition(sf::Vector2f((int)(p_snake[0].getPosition().x + x + 1920) % 1920,
+                                            (int)(p_snake[0].getPosition().y + y + 1088) % 1088));
     }
 }
 
@@ -130,68 +127,67 @@ void Snake::move_down()
 void Snake::rotate()
 {
     int counter{ 0 };
-    size_t len = p_snake.size();
     // changing tail orientation and turning RIGHT depending on turning part
-    if (p_snake[len - 1].getTextureRect() == LEFT_TAIL)
+    if (p_snake[length - 1].getTextureRect() == LEFT_TAIL)
     {
-        if (p_snake[len - 2].getTextureRect() == FIRST_QUARTER)
+        if (p_snake[length - 2].getTextureRect() == FIRST_QUARTER)
         {
-            p_snake[len - 2].setTextureRect(VERTICAL_MID);
-            p_snake[len - 1].setTextureRect(UP_TAIL);
+            p_snake[length - 2].setTextureRect(VERTICAL_MID);
+            p_snake[length - 1].setTextureRect(UP_TAIL);
         }
-        else if (p_snake[len - 2].getTextureRect() == FORTH_QUARTER)
+        else if (p_snake[length - 2].getTextureRect() == FORTH_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(DOWN_TAIL);
-            p_snake[len - 2].setTextureRect(VERTICAL_MID);
+            p_snake[length - 1].setTextureRect(DOWN_TAIL);
+            p_snake[length - 2].setTextureRect(VERTICAL_MID);
         }
     }
-    else if (p_snake[len - 1].getTextureRect() == DOWN_TAIL)
+    else if (p_snake[length - 1].getTextureRect() == DOWN_TAIL)
     {
-        if (p_snake[len - 2].getTextureRect() == FIRST_QUARTER)
+        if (p_snake[length - 2].getTextureRect() == FIRST_QUARTER)
         {
-            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
-            p_snake[len - 1].setTextureRect(RIGHT_TAIL);
+            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
+            p_snake[length - 1].setTextureRect(RIGHT_TAIL);
         }
-        else if (p_snake[len - 2].getTextureRect() == SECOND_QUARTER)
+        else if (p_snake[length - 2].getTextureRect() == SECOND_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(LEFT_TAIL);
-            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
+            p_snake[length - 1].setTextureRect(LEFT_TAIL);
+            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
         }
     }
 
-    else if (p_snake[len - 1].getTextureRect() == UP_TAIL)
+    else if (p_snake[length - 1].getTextureRect() == UP_TAIL)
     {
-        if (p_snake[len - 2].getTextureRect() == THIRD_QUARTER)
+        if (p_snake[length - 2].getTextureRect() == THIRD_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(LEFT_TAIL);
-            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
+            p_snake[length - 1].setTextureRect(LEFT_TAIL);
+            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
         }
 
-        else if (p_snake[len - 2].getTextureRect() == FORTH_QUARTER)
+        else if (p_snake[length - 2].getTextureRect() == FORTH_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(RIGHT_TAIL);
-            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
-            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
+            p_snake[length - 1].setTextureRect(RIGHT_TAIL);
+            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
+            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
         }
     }
 
     else
     {
-        if (p_snake[len - 2].getTextureRect() == THIRD_QUARTER)
+        if (p_snake[length - 2].getTextureRect() == THIRD_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(DOWN_TAIL);
-            p_snake[len - 2].setTextureRect(VERTICAL_MID);
+            p_snake[length - 1].setTextureRect(DOWN_TAIL);
+            p_snake[length - 2].setTextureRect(VERTICAL_MID);
         }
 
-        else if (p_snake[len - 2].getTextureRect() == SECOND_QUARTER)
+        else if (p_snake[length - 2].getTextureRect() == SECOND_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(UP_TAIL);
-            p_snake[len - 2].setTextureRect(VERTICAL_MID);
+            p_snake[length - 1].setTextureRect(UP_TAIL);
+            p_snake[length - 2].setTextureRect(VERTICAL_MID);
         }
     }
 
     // changing the spirit after turning part
-    for (size_t i = 1; i < len - 1; i++)
+    for (size_t i = 1; i < length - 1; i++)
     {
 
         // counnting number of turning parts
