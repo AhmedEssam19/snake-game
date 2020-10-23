@@ -72,7 +72,7 @@ void Snake::move(float x, float y)
             p_snake[i].setPosition(p_snake[i - 1].getPosition());
         }
         p_snake[0].setPosition(sf::Vector2f((int)(p_snake[0].getPosition().x + x + 1920) % 1920,
-                                            (int)(p_snake[0].getPosition().y + y + 1088) % 1088));
+                                            (int)(p_snake[0].getPosition().y + y + 1024) % 1024));
     }
 }
 
