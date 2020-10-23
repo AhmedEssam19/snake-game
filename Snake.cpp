@@ -1,26 +1,44 @@
 #include "Snake.h"
 
-Snake::Snake(const sf::Texture& whole_snake, unsigned int length):
-    whole_snake {whole_snake}, length{length}
+const sf::IntRect Snake::UP_HEAD {3 * width, 0 * height, width, height};
+const sf::IntRect Snake::DOWN_HEAD {4 * width, 1 * height, width, height};
+const sf::IntRect Snake::LEFT_HEAD {3 * width, 1 * height, width, height};
+const sf::IntRect Snake::RIGHT_HEAD {4 * width, 0 * height, width, height};
+
+const sf::IntRect Snake::UP_TAIL {4 * width, 3 * height, width, height};
+const sf::IntRect Snake::DOWN_TAIL {3 * width, 2 * height, width, height};
+const sf::IntRect Snake::RIGHT_TAIL {3 * width, 3 * height, width, height};
+const sf::IntRect Snake::LEFT_TAIL {4 * width, 2 * height, width, height};
+
+const sf::IntRect Snake::HORIZONTAL_MID {1 * width, 0 * height, width, height};
+const sf::IntRect Snake::VERTICAL_MID {2 * width, 1 * height, width, height};
+
+const sf::IntRect Snake::FIRST_QUARTER {2 * width, 0 * height, width, height};
+const sf::IntRect Snake::SECOND_QUARTER {0 * width, 0 * height, width, height};
+const sf::IntRect Snake::THIRD_QUARTER {0 * width, 1 * height, width, height};
+const sf::IntRect Snake::FORTH_QUARTER {2 * width, 2 * height, width, height};
+
+Snake::Snake(const sf::Texture& snake_image, unsigned int length):
+    snake_image {snake_image}, length{length}
 {
     // setting snake head
-    p_snake[0].setTexture(whole_snake);
-    p_snake[0].setTextureRect(sf::IntRect(4 * width, 0 * height, width, height));
+    p_snake[0].setTexture(snake_image);
+    p_snake[0].setTextureRect(RIGHT_HEAD);
 
     // setting snake body
     size_t len = p_snake.size();
     for (int i = 1; i < len - 1; i++)
     {
-        p_snake[i].setTexture(whole_snake);
-        p_snake[i].setTextureRect(sf::IntRect(1 * width, 0 * height, width, height));
+        p_snake[i].setTexture(snake_image);
+        p_snake[i].setTextureRect(HORIZONTAL_MID);
     }
 
     // setting snake tail
-    p_snake[len - 1].setTexture(whole_snake);
-    p_snake[len - 1].setTextureRect(sf::IntRect(4 * width, 2 * height, width, height));
+    p_snake[len - 1].setTexture(snake_image);
+    p_snake[len - 1].setTextureRect(LEFT_TAIL);
 
     // setting the apple
-    apple.setTexture(whole_snake);
+    apple.setTexture(snake_image);
     apple.setTextureRect(sf::IntRect(0 * width, 3 * height, width, height));
 }
 
@@ -63,111 +81,111 @@ void Snake::move(float x, float y)
 void Snake::move_right()
 {
     // rotating the snake part that comes afterhead to the right depending on last state
-    if (p_snake[0].getTextureRect() == sf::IntRect(3 * width, 0 * height, width, height))
-        p_snake[1].setTextureRect(sf::IntRect(0 * width, 0 * height, width, height));
-    else if(p_snake[0].getTextureRect() == sf::IntRect(4 * width, 1 * height, width, height))
-        p_snake[1].setTextureRect(sf::IntRect(0 * width, 1 * height, width, height));
+    if (p_snake[0].getTextureRect() == UP_HEAD)
+        p_snake[1].setTextureRect(SECOND_QUARTER);
+    else if(p_snake[0].getTextureRect() == DOWN_HEAD)
+        p_snake[1].setTextureRect(THIRD_QUARTER);
 
     // rotating the snake head the right
-    p_snake[0].setTextureRect(sf::IntRect(4 * width, 0 * height, width, height));
+    p_snake[0].setTextureRect(RIGHT_HEAD);
 }
 
 void Snake::move_left()
 {
     // rotating the snake part that comes afterhead to the left depending on last state
-    if (p_snake[0].getTextureRect() == sf::IntRect(3 * width, 0 * height, width, height))
-        p_snake[1].setTextureRect(sf::IntRect(2 * width, 0 * height, width, height));
-    else if (p_snake[0].getTextureRect() == sf::IntRect(4 * width, 1 * height, width, height))
-        p_snake[1].setTextureRect(sf::IntRect(2 * width, 2 * height, width, height));
+    if (p_snake[0].getTextureRect() == UP_HEAD)
+        p_snake[1].setTextureRect(FIRST_QUARTER);
+    else if (p_snake[0].getTextureRect() == DOWN_HEAD)
+        p_snake[1].setTextureRect(FORTH_QUARTER);
 
     // rotating the snake head the left
-    p_snake[0].setTextureRect(sf::IntRect(3 * width, 1 * height, width, height));
+    p_snake[0].setTextureRect(LEFT_HEAD);
 }
 
 void Snake::move_up()
 {
     // rotating the snake part that comes afterhead to the north depending on last state
-    if (p_snake[0].getTextureRect() == sf::IntRect(4 * width, 0 * height, width, height))
-        p_snake[1].setTextureRect(sf::IntRect(2 * width, 2 * height, width, height));
-    else if (p_snake[0].getTextureRect() == sf::IntRect(3 * width, 1 * height, width, height))
-        p_snake[1].setTextureRect(sf::IntRect(0 * width, 1 * height, width, height));
+    if (p_snake[0].getTextureRect() == RIGHT_HEAD)
+        p_snake[1].setTextureRect(FORTH_QUARTER);
+    else if (p_snake[0].getTextureRect() == LEFT_HEAD)
+        p_snake[1].setTextureRect(THIRD_QUARTER);
 
     // rotating the snake head the north
-    p_snake[0].setTextureRect(sf::IntRect(3 * width, 0 * height, width, height));
+    p_snake[0].setTextureRect(UP_HEAD);
 }
 
 void Snake::move_down()
 {
     // rotating the snake part that comes afterhead to the south depending on last state
-    if (p_snake[0].getTextureRect() == sf::IntRect(4 * width, 0 * height, width, height))
-        p_snake[1].setTextureRect(sf::IntRect(2 * width, 0 * height, width, height));
-    else if (p_snake[0].getTextureRect() == sf::IntRect(3 * width, 1 * height, width, height))
-        p_snake[1].setTextureRect(sf::IntRect(0 * width, 0 * height, width, height));
+    if (p_snake[0].getTextureRect() == RIGHT_HEAD)
+        p_snake[1].setTextureRect(FIRST_QUARTER);
+    else if (p_snake[0].getTextureRect() == LEFT_HEAD)
+        p_snake[1].setTextureRect(SECOND_QUARTER);
     
     // rotating the snake head the south
-    p_snake[0].setTextureRect(sf::IntRect(4 * width, 1 * height, width, height));
+    p_snake[0].setTextureRect(DOWN_HEAD);
 }
 
 void Snake::rotate()
 {
     int counter{ 0 };
     size_t len = p_snake.size();
-    // changing tail orientation and turning part depending on turning part
-    if (p_snake[len - 1].getTextureRect() == sf::IntRect(4 * width, 2 * height, width, height))
+    // changing tail orientation and turning RIGHT depending on turning part
+    if (p_snake[len - 1].getTextureRect() == LEFT_TAIL)
     {
-        if (p_snake[len - 2].getTextureRect() == sf::IntRect(2 * width, 0 * height, width, height))
+        if (p_snake[len - 2].getTextureRect() == FIRST_QUARTER)
         {
-            p_snake[len - 2].setTextureRect(sf::IntRect(2 * width, 1 * height, width, height));
-            p_snake[len - 1].setTextureRect(sf::IntRect(4 * width, 3 * height, width, height));
+            p_snake[len - 2].setTextureRect(VERTICAL_MID);
+            p_snake[len - 1].setTextureRect(UP_TAIL);
         }
-        else if (p_snake[len - 2].getTextureRect() == sf::IntRect(2 * width, 2 * height, width, height))
+        else if (p_snake[len - 2].getTextureRect() == FORTH_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(sf::IntRect(3 * width, 2 * height, width, height));
-            p_snake[len - 2].setTextureRect(sf::IntRect(2 * width, 1 * height, width, height));
+            p_snake[len - 1].setTextureRect(DOWN_TAIL);
+            p_snake[len - 2].setTextureRect(VERTICAL_MID);
         }
     }
-    else if (p_snake[len - 1].getTextureRect() == sf::IntRect(3 * width, 2 * height, width, height))
+    else if (p_snake[len - 1].getTextureRect() == DOWN_TAIL)
     {
-        if (p_snake[len - 2].getTextureRect() == sf::IntRect(2 * width, 0 * height, width, height))
+        if (p_snake[len - 2].getTextureRect() == FIRST_QUARTER)
         {
-            p_snake[len - 2].setTextureRect(sf::IntRect(1 * width, 0 * height, width, height));
-            p_snake[len - 1].setTextureRect(sf::IntRect(3 * width, 3 * height, width, height));
+            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
+            p_snake[len - 1].setTextureRect(RIGHT_TAIL);
         }
-        else if (p_snake[len - 2].getTextureRect() == sf::IntRect(0 * width, 0 * height, width, height))
+        else if (p_snake[len - 2].getTextureRect() == SECOND_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(sf::IntRect(4 * width, 2 * height, width, height));
-            p_snake[len - 2].setTextureRect(sf::IntRect(1 * width, 0 * height, width, height));
+            p_snake[len - 1].setTextureRect(LEFT_TAIL);
+            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
         }
     }
 
-    else if (p_snake[len - 1].getTextureRect() == sf::IntRect(4 * width, 3 * height, width, height))
+    else if (p_snake[len - 1].getTextureRect() == UP_TAIL)
     {
-        if (p_snake[len - 2].getTextureRect() == sf::IntRect(0 * width, 1 * height, width, height))
+        if (p_snake[len - 2].getTextureRect() == THIRD_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(sf::IntRect(4 * width, 2 * height, width, height));
-            p_snake[len - 2].setTextureRect(sf::IntRect(1 * width, 0 * height, width, height));
+            p_snake[len - 1].setTextureRect(LEFT_TAIL);
+            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
         }
 
-        else if (p_snake[len - 2].getTextureRect() == sf::IntRect(2 * width, 2 * height, width, height))
+        else if (p_snake[len - 2].getTextureRect() == FORTH_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(sf::IntRect(3 * width, 3 * height, width, height));
-            p_snake[len - 2].setTextureRect(sf::IntRect(1 * width, 0 * height, width, height));
-            p_snake[len - 2].setTextureRect(sf::IntRect(1 * width, 0 * height, width, height));
+            p_snake[len - 1].setTextureRect(RIGHT_TAIL);
+            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
+            p_snake[len - 2].setTextureRect(HORIZONTAL_MID);
         }
     }
 
     else
     {
-        if (p_snake[len - 2].getTextureRect() == sf::IntRect(0 * width, 1 * height, width, height))
+        if (p_snake[len - 2].getTextureRect() == THIRD_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(sf::IntRect(3 * width, 2 * height, width, height));
-            p_snake[len - 2].setTextureRect(sf::IntRect(2 * width, 1 * height, width, height));
+            p_snake[len - 1].setTextureRect(DOWN_TAIL);
+            p_snake[len - 2].setTextureRect(VERTICAL_MID);
         }
 
-        else if (p_snake[len - 2].getTextureRect() == sf::IntRect(0 * width, 0 * height, width, height))
+        else if (p_snake[len - 2].getTextureRect() == SECOND_QUARTER)
         {
-            p_snake[len - 1].setTextureRect(sf::IntRect(4 * width, 3 * height, width, height));
-            p_snake[len - 2].setTextureRect(sf::IntRect(2 * width, 1 * height, width, height));
+            p_snake[len - 1].setTextureRect(UP_TAIL);
+            p_snake[len - 2].setTextureRect(VERTICAL_MID);
         }
     }
 
@@ -176,11 +194,8 @@ void Snake::rotate()
     {
 
         // counnting number of turning parts
-        if (p_snake[i].getTextureRect() == sf::IntRect(2 * width, 0 * height, width, height) ||
-            p_snake[i].getTextureRect() == sf::IntRect(0 * width, 0 * height, width, height) ||
-            p_snake[i].getTextureRect() == sf::IntRect(2 * width, 2 * height, width, height) ||
-            p_snake[i].getTextureRect() == sf::IntRect(0 * width, 1 * height, width, height))
-   
+        if (p_snake[i].getTextureRect() == FIRST_QUARTER || p_snake[i].getTextureRect() == SECOND_QUARTER ||
+            p_snake[i].getTextureRect() == FORTH_QUARTER || p_snake[i].getTextureRect() == THIRD_QUARTER)
             counter++;
 
         else if (counter > 0)
@@ -196,13 +211,13 @@ void Snake::rotate()
             // if number of turning parts is odd we alternating snake body part
             if (counter % 2 != 0)
             {
-                if (temp == sf::IntRect(2 * width, 1 * height, width, height))
+                if (temp == VERTICAL_MID)
                 {
-                    p_snake[i - counter].setTextureRect(sf::IntRect(1 * width, 0 * height, width, height));
+                    p_snake[i - counter].setTextureRect(HORIZONTAL_MID);
                 }
-                else if (temp == sf::IntRect(1 * width, 0 * height, width, height))
+                else if (temp == HORIZONTAL_MID)
                 {
-                    p_snake[i - counter].setTextureRect(sf::IntRect(2 * width, 1 * height, width, height));
+                    p_snake[i - counter].setTextureRect(VERTICAL_MID);
                 }
             }
 
@@ -227,33 +242,33 @@ void Snake::apple_eaten()
         apple.setPosition(sf::Vector2f((rand() % 30) * 64, (rand() % 15) * 64));
         
         // inserting the new body part after snake head directly depending on the head orientation
-        sf::Sprite temp(whole_snake);
-        if (p_snake[0].getTextureRect() == sf::IntRect(3 * width, 0 * height, width, height))
+        sf::Sprite temp(snake_image);
+        if (p_snake[0].getTextureRect() == UP_HEAD)
         {
-            temp.setTextureRect(sf::IntRect(2 * width, 1 * height, width, height));
+            temp.setTextureRect(VERTICAL_MID);
           
             // setting position of new part to head position
             temp.setPosition(p_snake[0].getPosition());
             p_snake[0].move(0, -64);
         }
 
-        else if (p_snake[0].getTextureRect() == sf::IntRect(4 * width, 0 * height, width, height))
+        else if (p_snake[0].getTextureRect() == RIGHT_HEAD)
         {
-            temp.setTextureRect(sf::IntRect(1 * width, 0 * height, width, height));
+            temp.setTextureRect(HORIZONTAL_MID);
             temp.setPosition(p_snake[0].getPosition());
             p_snake[0].move(64, 0);
         }
 
-        else if (p_snake[0].getTextureRect() == sf::IntRect(4 * width, 1 * height, width, height))
+        else if (p_snake[0].getTextureRect() == DOWN_HEAD)
         {
-            temp.setTextureRect(sf::IntRect(2 * width, 1 * height, width, height));
+            temp.setTextureRect(VERTICAL_MID);
             temp.setPosition(p_snake[0].getPosition());
             p_snake[0].move(0, 64);
         }
 
         else
         {
-            temp.setTextureRect(sf::IntRect(1 * width, 0 * height, width, height));
+            temp.setTextureRect(HORIZONTAL_MID);
             temp.setPosition(p_snake[0].getPosition());
             p_snake[0].move(-64, 0);
         }

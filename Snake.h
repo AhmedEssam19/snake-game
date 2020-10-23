@@ -7,16 +7,34 @@
 class Snake
 {
 private:
-	const sf::Texture whole_snake;
+	const sf::Texture snake_image;
 	unsigned int length;
 	std::vector<sf::Sprite> p_snake{2 + length};
 	sf::Sprite apple;
-	const unsigned int width{ 64 };
-	const unsigned int height{ 64 };
 
+	static const unsigned int width{ 64 };
+	static const unsigned int height{ 64 };
+
+	static const sf::IntRect UP_HEAD;
+	static const sf::IntRect DOWN_HEAD;
+	static const sf::IntRect LEFT_HEAD;
+	static const sf::IntRect RIGHT_HEAD;
+
+	static const sf::IntRect UP_TAIL;
+	static const sf::IntRect DOWN_TAIL;
+	static const sf::IntRect LEFT_TAIL;
+	static const sf::IntRect RIGHT_TAIL;
+
+	static const sf::IntRect HORIZONTAL_MID;
+	static const sf::IntRect VERTICAL_MID;
+
+	static const sf::IntRect FIRST_QUARTER;
+	static const sf::IntRect SECOND_QUARTER;
+	static const sf::IntRect THIRD_QUARTER;
+	static const sf::IntRect FORTH_QUARTER;
 
 public:
-	Snake(const sf::Texture& whole_snake, unsigned int length = 1);
+	Snake(const sf::Texture& snake_image, unsigned int length = 1);
 	void start();
 	void draw(sf::RenderWindow& window);
 	void move(float x, float y);
