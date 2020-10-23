@@ -18,7 +18,7 @@ int main()
 	float x{}, y{};
 	enum driections { left, up, right, down };
 	int direction = right;
-	bool flag{ true };
+	bool key_pressed{ false };
 
 	if (!snake_texture.loadFromFile("snake-graphics.png"))
 	{
@@ -32,8 +32,13 @@ int main()
 		return 1;
 	}
 
+	// set the back ground 
 	sf::Sprite Pbackground(background);
-	Pbackground.setScale(sf::Vector2f((float) 1920 / 1680, (float) 1080 / 1050));
+
+	// scale the background to fill the screen
+	Pbackground.setScale(sf::Vector2f((float) 1920 / Pbackground.getTextureRect().width, 
+						(float) 1080 / Pbackground.getTextureRect().height));
+
 	// declaring snake and setting its initial orientaion
 	Snake snake(snake_texture);
 	snake.start();
@@ -53,10 +58,10 @@ int main()
 				if (Event.key.code == sf::Keyboard::Left)
 				{
 					// ensure not to rotate 180 degrees
-					// flag prevent double press before moving the snake
-					if (direction != right && flag)
+					// key_pressed prevent double press before moving the snake
+					if (direction != right && !key_pressed)
 					{
-						flag = false;
+						key_pressed = true;
 						snake.move_left();
 						x = -moving_distance; y = 0;
 						direction = left;
@@ -66,9 +71,9 @@ int main()
 				// moving down
 				else if (Event.key.code == sf::Keyboard::Down)
 				{
-					if (direction != up && flag)
+					if (direction != up && !key_pressed)
 					{
-						flag = false;
+						key_pressed = true;
 						snake.move_down();
 						x = 0; y = moving_distance;
 						direction = down;
@@ -78,9 +83,9 @@ int main()
 				// moving right
 				else if (Event.key.code == sf::Keyboard::Right)
 				{
-					if (direction != left && flag)
+					if (direction != left && !key_pressed)
 					{
-						flag = false;
+						key_pressed = true;
 						snake.move_right();
 						x = moving_distance; y = 0;
 						direction = right;
@@ -90,9 +95,9 @@ int main()
 				// moving up
 				else if (Event.key.code == sf::Keyboard::Up)
 				{
-					if (direction != down && flag)
+					if (direction != down && !key_pressed)
 					{
-						flag = false;
+						key_pressed = true;
 						snake.move_up();
 						x = 0; y = -moving_distance;
 						direction = up;
@@ -110,7 +115,7 @@ int main()
 			if (speed > 20)
 			{
 				window.draw(Pbackground);
-				flag = true;
+				key_pressed = false;
 				speed = 0;
 				snake.move(x, y);
 				snake.apple_eaten();

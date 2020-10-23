@@ -1,5 +1,6 @@
 #include "Snake.h"
 
+// set different snake parts rectangles
 const sf::IntRect Snake::UP_HEAD {3 * width, 0 * height, width, height};
 const sf::IntRect Snake::DOWN_HEAD {4 * width, 1 * height, width, height};
 const sf::IntRect Snake::LEFT_HEAD {3 * width, 1 * height, width, height};

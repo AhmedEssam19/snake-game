@@ -12,9 +12,12 @@ private:
 	std::vector<sf::Sprite> p_snake{2 + length};
 	sf::Sprite apple;
 
+	// width and height of snake parts in pixels
 	static const unsigned int width{ 64 };
 	static const unsigned int height{ 64 };
 
+
+	// set different snake parts rectangles
 	static const sf::IntRect UP_HEAD;
 	static const sf::IntRect DOWN_HEAD;
 	static const sf::IntRect LEFT_HEAD;
