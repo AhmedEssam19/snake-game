@@ -259,7 +259,8 @@ void Snake::apple_eaten()
         }
 
         // ensure that snake move from end of a side to start of the other side
-        p_snake[0].setPosition(sf::Vector2f((int)(p_snake[0].getPosition().x + 1920) % 1920, (int)(p_snake[0].getPosition().y + 1088) % 1088));
+        p_snake[0].setPosition(sf::Vector2f((int)(p_snake[0].getPosition().x + 1920) % 1920,
+                                            (int)(p_snake[0].getPosition().y + 1024) % 1024));
         //increasing the length of the body
         length++;
         p_snake.insert(p_snake.begin() + 1, temp);
