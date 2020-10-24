@@ -45,7 +45,7 @@ public:
 	void move_left();
 	void move_up();
 	void move_down();
-	void rotate();
+	void modify_turnings();
 	void apple_eaten();
 	void snake_crash(sf::RenderWindow& window);
 };

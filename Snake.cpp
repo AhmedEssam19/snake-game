@@ -124,72 +124,60 @@ void Snake::move_down()
     p_snake[0].setTextureRect(DOWN_HEAD);
 }
 
-void Snake::rotate()
+void Snake::modify_turnings()
 {
-    int counter{ 0 };
     // changing tail orientation and turning RIGHT depending on turning part
-    if (p_snake[length - 1].getTextureRect() == LEFT_TAIL)
+    if (p_snake[length - 2].getTextureRect() != HORIZONTAL_MID && 
+        p_snake[length - 2].getTextureRect() != VERTICAL_MID)
     {
-        if (p_snake[length - 2].getTextureRect() == FIRST_QUARTER)
+        if (p_snake[length - 1].getTextureRect() == LEFT_TAIL)
         {
-            p_snake[length - 2].setTextureRect(VERTICAL_MID);
-            p_snake[length - 1].setTextureRect(UP_TAIL);
-        }
-        else if (p_snake[length - 2].getTextureRect() == FORTH_QUARTER)
-        {
-            p_snake[length - 1].setTextureRect(DOWN_TAIL);
-            p_snake[length - 2].setTextureRect(VERTICAL_MID);
-        }
-    }
-    else if (p_snake[length - 1].getTextureRect() == DOWN_TAIL)
-    {
-        if (p_snake[length - 2].getTextureRect() == FIRST_QUARTER)
-        {
-            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
-            p_snake[length - 1].setTextureRect(RIGHT_TAIL);
-        }
-        else if (p_snake[length - 2].getTextureRect() == SECOND_QUARTER)
-        {
-            p_snake[length - 1].setTextureRect(LEFT_TAIL);
-            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
-        }
-    }
-
-    else if (p_snake[length - 1].getTextureRect() == UP_TAIL)
-    {
-        if (p_snake[length - 2].getTextureRect() == THIRD_QUARTER)
-        {
-            p_snake[length - 1].setTextureRect(LEFT_TAIL);
-            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
-        }
-
-        else if (p_snake[length - 2].getTextureRect() == FORTH_QUARTER)
-        {
-            p_snake[length - 1].setTextureRect(RIGHT_TAIL);
-            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
-            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
-        }
-    }
-
-    else
-    {
-        if (p_snake[length - 2].getTextureRect() == THIRD_QUARTER)
-        {
-            p_snake[length - 1].setTextureRect(DOWN_TAIL);
+            if (p_snake[length - 2].getTextureRect() == FIRST_QUARTER)
+                p_snake[length - 1].setTextureRect(UP_TAIL);
+            
+            else if (p_snake[length - 2].getTextureRect() == FORTH_QUARTER)
+                p_snake[length - 1].setTextureRect(DOWN_TAIL);
+            
             p_snake[length - 2].setTextureRect(VERTICAL_MID);
         }
-
-        else if (p_snake[length - 2].getTextureRect() == SECOND_QUARTER)
+        else if (p_snake[length - 1].getTextureRect() == DOWN_TAIL)
         {
-            p_snake[length - 1].setTextureRect(UP_TAIL);
+            if (p_snake[length - 2].getTextureRect() == FIRST_QUARTER)
+                p_snake[length - 1].setTextureRect(RIGHT_TAIL);
+
+            else if (p_snake[length - 2].getTextureRect() == SECOND_QUARTER)
+                p_snake[length - 1].setTextureRect(LEFT_TAIL);
+                
+            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
+        }
+
+        else if (p_snake[length - 1].getTextureRect() == UP_TAIL)
+        {
+            if (p_snake[length - 2].getTextureRect() == THIRD_QUARTER)
+                p_snake[length - 1].setTextureRect(LEFT_TAIL);
+
+            else if (p_snake[length - 2].getTextureRect() == FORTH_QUARTER)
+                p_snake[length - 1].setTextureRect(RIGHT_TAIL);
+            
+            p_snake[length - 2].setTextureRect(HORIZONTAL_MID);
+        }
+
+        else
+        {
+            if (p_snake[length - 2].getTextureRect() == THIRD_QUARTER)
+                p_snake[length - 1].setTextureRect(DOWN_TAIL);
+
+            else if (p_snake[length - 2].getTextureRect() == SECOND_QUARTER)
+                p_snake[length - 1].setTextureRect(UP_TAIL);
+                
             p_snake[length - 2].setTextureRect(VERTICAL_MID);
         }
     }
-
-    // changing the spirit after turning part
+    
+    // change the spirit after turning part and restore the turning part to their place
+    int counter{ 0 };
     for (size_t i = 1; i < length - 1; i++)
     {
-
         // counnting number of turning parts
         if (p_snake[i].getTextureRect() == FIRST_QUARTER || p_snake[i].getTextureRect() == SECOND_QUARTER ||
             p_snake[i].getTextureRect() == FORTH_QUARTER || p_snake[i].getTextureRect() == THIRD_QUARTER)

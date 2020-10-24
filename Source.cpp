@@ -122,8 +122,8 @@ int main()
 				snake.snake_crash(window);
 				snake.draw(window);
 
-				// rotate the snake after drawing it
-				snake.rotate();
+				// modify turnings the snake after drawing it
+				snake.modify_turnings();
 				window.display();
 				window.clear();
 			}
